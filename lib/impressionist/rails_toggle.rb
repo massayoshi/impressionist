@@ -6,7 +6,7 @@ module Impressionist
   class RailsToggle
     # decides where or not to include attr_accessible
     def should_include?
-      supported_by_rails? && (not using_strong_parameters?)
+      true #supported_by_rails? && (not using_strong_parameters?)
     end
 
     private
