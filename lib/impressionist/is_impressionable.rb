@@ -18,6 +18,6 @@ module Impressionist
         :dependent => :destroy)
       end
     end
-  
+
   end
 end

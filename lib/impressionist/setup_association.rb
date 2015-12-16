@@ -12,7 +12,8 @@ module Impressionist
     end
 
     def define_belongs_to
-      receiver.belongs_to(:impressionable, :polymorphic => true)
+      receiver.belongs_to(:impressionable, polymorphic: true)
+      receiver.belongs_to(:user, polymorphic: true)
     end
 
     def set
@@ -35,7 +36,7 @@ module Impressionist
                         :view_name,
                         :referrer,
                         :message,
-                        :user_id,
+                        :user,
                         :params)
       end
 
@@ -45,5 +46,3 @@ module Impressionist
       end
   end
 end
-
-

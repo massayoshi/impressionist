@@ -12,11 +12,11 @@ module ImpressionistController
       base.before_filter :impressionist_app_filter
     end
 
-    def impressionist(obj,message=nil,opts={})
+    def impressionist(obj, user=nil, message=nil, opts={})
       if should_count_impression?(opts)
         if obj.respond_to?("impressionable?")
           if unique_instance?(obj, opts[:unique])
-            obj.impressions.create(associative_create_statement({:message => message}))
+            obj.impressions.create(associative_create_statement({user: user, message: message}))
           end
         else
           # we could create an impression anyway. for classes, too. why not?
@@ -46,7 +46,6 @@ module ImpressionistController
       query_params.reverse_merge!(
         :controller_name => controller_name,
         :action_name => action_name,
-        :user_id => user_id,
         :request_hash => @impressionist_hash,
         :session_hash => session_hash,
         :ip_address => request.remote_ip,
@@ -103,7 +102,7 @@ module ImpressionistController
       request_param = params_hash
       impressions.detect{|impression| impression.params == request_param }.nil?
     end
-    
+
     # creates the query to check for uniqueness
     def unique_query(unique_opts,impressionable=nil)
       full_statement = direct_create_statement({},impressionable)
@@ -134,13 +133,6 @@ module ImpressionistController
 
     def params_hash
       request.params.except(:controller, :action, :id)
-    end
-
-    #use both @current_user and current_user helper
-    def user_id
-      user_id = @current_user ? @current_user.id : nil rescue nil
-      user_id = current_user ? current_user.id : nil rescue nil if user_id.blank?
-      user_id
     end
   end
 end
