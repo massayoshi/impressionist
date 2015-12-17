@@ -12,7 +12,7 @@ module ImpressionistController
       base.before_filter :impressionist_app_filter
     end
 
-    def impressionist(obj, user=nil, message=nil, opts={})
+    def impressionist(obj, message=nil, opts={}, user=nil)
       if should_count_impression?(opts)
         if obj.respond_to?("impressionable?")
           if unique_instance?(obj, opts[:unique])
